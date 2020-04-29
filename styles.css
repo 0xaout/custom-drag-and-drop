@@ -1,0 +1,15 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.target_block {
+    border: 3px solid black;
+    padding: 2rem;
+    display: inline-block;
+}
+
+.element {
+    padding: 2rem;
+    background: orange;
+}
