@@ -12,6 +12,6 @@ body {
 .element {
     padding: 2rem;
     background: orange;
-    
+    user-select: none;
    
 }
