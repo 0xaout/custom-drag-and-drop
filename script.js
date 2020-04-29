@@ -37,6 +37,26 @@ document.addEventListener("mousemove", function(e) {
     }
 });
 
+let new_element = document.createElement("div");
+new_element.classList.add("element");
+new_element.style.background = "pink";
+        
+        
+
+document.addEventListener("mouseover", function(e) {
+    if(e.target.classList.contains("target_block") && mouseDown == true) {
+        console.log("pouseover")
+        
+        e.target.appendChild(new_element);
+
+        
+
+    }
+});
+
+document.addEventListener("mouseleave", function() {
+    new_element.remove();
+});
 
 
 document.addEventListener("mouseup", function(e) {
@@ -70,6 +90,7 @@ document.addEventListener("mouseup", function(e) {
     }
 
     moving_element = null;
+    new_element.remove();
 });
 
 
