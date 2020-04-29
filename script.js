@@ -33,6 +33,7 @@ document.addEventListener("mousemove", function(e) {
         moving_element.style.left = e.clientX - offsetX + "px";
         moving_element.style.top = e.clientY - offsetY + "px";
         moving_element.style.zIndex = "-9999";
+       
     }
 });
 
@@ -63,9 +64,12 @@ document.addEventListener("mouseup", function(e) {
         e.target.parentNode.appendChild(new_element);
 
         moving_element.remove();
+        
     } else {
 
     }
+
+    moving_element = null;
 });
 
 
