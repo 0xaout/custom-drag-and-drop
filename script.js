@@ -1,14 +1,24 @@
-mouseX = null;
-mouseY = null;
-mouseDown = false;
+let mouseX = null;
+let mouseY = null;
+let mouseDown = false;
 
-offsetX = null;
-offsetY = null;
+let offsetX = null;
+let offsetY = null;
 
-moving_element = null;
+let moving_element = null;
+
+let placeholder = null;
 
 
+let new_element = null;
 
+let element_down = false;
+let element_up = false;
+
+let sorting_target = null;
+
+
+// MOUSE DOWN
 document.addEventListener("mousedown", function(e) {   
     if(e.target.classList.contains("element")) {
         mouseDown = true;
@@ -25,72 +35,105 @@ document.addEventListener("mousedown", function(e) {
     }
 });
 
+
+// MOUSE MOVE
 document.addEventListener("mousemove", function(e) {
     if(mouseDown == true) {
-        console.log("mousedown");
-
         moving_element.style.position = "absolute";
         moving_element.style.left = e.clientX - offsetX + "px";
         moving_element.style.top = e.clientY - offsetY + "px";
         moving_element.style.zIndex = "-9999";
-       
+
+
+        rect = e.target.getBoundingClientRect();
+    
+        if(rect.top + (rect.height / 2) > e.clientY && e.target.classList.contains("element")) {
+            element_up = true;
+            element_down = false;
+
+        } else {
+            element_down = true;
+            element_up = false;
+        }
+
+        sorting_target = e.target;
     }
 });
 
-let new_element = document.createElement("div");
-new_element.classList.add("element");
-new_element.style.background = "pink";
-        
-        
 
+    
+// MOUSE OVER
 document.addEventListener("mouseover", function(e) {
-    if(e.target.classList.contains("target_block") && mouseDown == true) {
-        console.log("pouseover")
-        
-        e.target.appendChild(new_element);
+    
 
+    placeholder = document.createElement("div");
+    placeholder.classList.add("element");
+    placeholder.classList.add("placeholder");
+    placeholder.style.background = "pink";
+
+    if(e.target.classList.contains("element")) {
+ 
         
+    }
+   
+
+
+    if(e.target.classList.contains("target_block") && mouseDown == true) {
+        
+        //e.target.appendChild(new_element);
 
     }
 });
 
-document.addEventListener("mouseleave", function() {
+// MOUSE LEAVE
+document.addEventListener("mouseout", function(e) {
+  
+    //console.log(e.relatedTarget);
+
     new_element.remove();
 });
 
 
+// MOUSE UP
 document.addEventListener("mouseup", function(e) {
     mouseDown = false;
     moving_element.classList.remove("moving");
 
     moving_element.style.zIndex = "9999";
 
-    if(e.target.classList.contains("target_block"))  {
 
+    if(e.target.classList.contains("target_block")) {
         let new_element = document.createElement("div");
         new_element.innerHTML = moving_element.innerHTML;
         new_element.classList.add("element");
-        
+
         e.target.appendChild(new_element);
-
-        moving_element.remove();
-    } 
-
-    else if(e.target.parentNode.classList.contains("target_block")) {
-        let new_element = document.createElement("div");
-        new_element.innerHTML = moving_element.innerHTML;
-        new_element.classList.add("element");
-        
-        e.target.parentNode.appendChild(new_element);
-
-        moving_element.remove();
-        
-    } else {
-
     }
 
+    else if(element_up == true) {
+        let new_element = document.createElement("div");
+        new_element.innerHTML = moving_element.innerHTML;
+        new_element.classList.add("element");
+
+        sorting_target.parentNode.insertBefore(new_element, sorting_target);
+    } else if (element_down == true) {
+        let new_element = document.createElement("div");
+        new_element.innerHTML = moving_element.innerHTML;
+        new_element.classList.add("element");
+
+        sorting_target.parentNode.insertBefore(new_element, sorting_target.nextSibling);
+    }
+
+   
+    
+        
+    placeholder.classList.remove("placeholder");
+
+    moving_element.remove();
+    
+
     moving_element = null;
-    new_element.remove();
+    //new_element.remove();
 });
 
 
