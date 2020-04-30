@@ -20,7 +20,7 @@ let sorting_target = null;
 
 // MOUSE DOWN
 document.addEventListener("mousedown", function(e) {   
-    if(e.target.classList.contains("element")) {
+    if(e.target.classList.contains("dad_block")) {
         mouseDown = true;
     
         e.target.classList.add("moving");
@@ -47,7 +47,7 @@ document.addEventListener("mousemove", function(e) {
 
         rect = e.target.getBoundingClientRect();
     
-        if(rect.top + (rect.height / 2) > e.clientY && e.target.classList.contains("element")) {
+        if(rect.top + (rect.height / 2) > e.clientY && e.target.classList.contains("dad_block")) {
             element_up = true;
             element_down = false;
 
@@ -67,18 +67,18 @@ document.addEventListener("mouseover", function(e) {
     
 
     placeholder = document.createElement("div");
-    placeholder.classList.add("element");
+    placeholder.classList.add("dad_block");
     placeholder.classList.add("placeholder");
     placeholder.style.background = "pink";
 
-    if(e.target.classList.contains("element")) {
+    if(e.target.classList.contains("dad_block")) {
  
         
     }
    
 
 
-    if(e.target.classList.contains("target_block") && mouseDown == true) {
+    if(e.target.classList.contains("dad_block_container") && mouseDown == true) {
         
         //e.target.appendChild(new_element);
 
@@ -102,10 +102,10 @@ document.addEventListener("mouseup", function(e) {
     moving_element.style.zIndex = "9999";
 
 
-    if(e.target.classList.contains("target_block")) {
+    if(e.target.classList.contains("dad_block_container")) {
         let new_element = document.createElement("div");
         new_element.innerHTML = moving_element.innerHTML;
-        new_element.classList.add("element");
+        new_element.classList.add("dad_block");
 
         e.target.appendChild(new_element);
     }
@@ -113,13 +113,13 @@ document.addEventListener("mouseup", function(e) {
     else if(element_up == true) {
         let new_element = document.createElement("div");
         new_element.innerHTML = moving_element.innerHTML;
-        new_element.classList.add("element");
+        new_element.classList.add("dad_block");
 
         sorting_target.parentNode.insertBefore(new_element, sorting_target);
     } else if (element_down == true) {
         let new_element = document.createElement("div");
         new_element.innerHTML = moving_element.innerHTML;
-        new_element.classList.add("element");
+        new_element.classList.add("dad_block");
 
         sorting_target.parentNode.insertBefore(new_element, sorting_target.nextSibling);
     }

@@ -8,14 +8,14 @@ body {
     height: 100vh;
 }
 
-.target_block {
+.dad_block_container {
     border: 3px solid black;
     padding: 2rem;
     
     margin: auto;
 }
 
-.element {
+.dad_block {
     transition-property: transform;
     transition-duration: 0.2s;
     padding: 2rem;
@@ -25,7 +25,5 @@ body {
 }
 
 .moving {
-    
     transform: rotate3d(1, 2.0, 3.0, 10deg) scale(0.9);
-   
 }
