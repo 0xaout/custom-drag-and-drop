@@ -11,8 +11,7 @@ body {
 .dad_block_container {
     border: 3px solid black;
     padding: 2rem;
-    
-    margin: auto;
+    margin: auto; 
 }
 
 .dad_block {
@@ -21,9 +20,14 @@ body {
     padding: 2rem;
     background: orange;
     user-select: none;
-   
 }
 
 .moving {
     transform: rotate3d(1, 2.0, 3.0, 10deg) scale(0.9);
+    z-index: 10;   
+}
+
+.placeholder {
+    padding: 2rem;
+    background: #eee;
 }

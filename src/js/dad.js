@@ -7,90 +7,65 @@ let offsetY = null;
 
 let moving_element = null;
 
-let placeholder = null;
-
-
-let new_element = null;
-
 let element_down = false;
 let element_up = false;
 
-let sorting_target = null;
-
+let blockBellow = null;
 
 // MOUSE DOWN
 document.addEventListener("mousedown", function(e) {   
     if(e.target.classList.contains("dad_block")) {
+        // activate the mouseDown state
         mouseDown = true;
-    
+        
+        // when a ded_block is pressed, we add a "moving" class to it
         e.target.classList.add("moving");
     
+        // saving the current moving element in a variable for later
         moving_element = e.target;
     
-    
+        // for getting the mouse position relative to the clicked div
+        // used for div movement when the mouse is down
         let rect = e.target.getBoundingClientRect();
-    
         offsetX = e.clientX - rect.left;
         offsetY = e.clientY - rect.top;
-    }
-});
 
-
-// MOUSE MOVE
-document.addEventListener("mousemove", function(e) {
-    if(mouseDown == true) {
         moving_element.style.position = "absolute";
         moving_element.style.left = e.clientX - offsetX + "px";
         moving_element.style.top = e.clientY - offsetY + "px";
-        moving_element.style.zIndex = "-9999";
+    }
+});
 
+// MOUSE MOVE
+document.addEventListener("mousemove", function(e) {
 
-        rect = e.target.getBoundingClientRect();
-    
-        if(rect.top + (rect.height / 2) > e.clientY && e.target.classList.contains("dad_block")) {
-            element_up = true;
-            element_down = false;
+    if(mouseDown == true) {
+        // changing dragged block style to make it follow the mouse
+        
+        moving_element.style.left = e.clientX - offsetX + "px";
+        moving_element.style.top = e.clientY - offsetY + "px";
+        
+        // checking the div under the dragged block
+        moving_element.hidden = true;
+        divBellow = document.elementFromPoint(event.clientX, event.clientY).closest(".dad_block_container");
+        blockBellow = document.elementFromPoint(event.clientX, event.clientY).closest(".dad_block");
+        moving_element.hidden = false;
 
-        } else {
-            element_down = true;
-            element_up = false;
+        //////////////////
+
+        if(blockBellow != null) {
+            rect = blockBellow.getBoundingClientRect();
+        
+            if(rect.top + (rect.height / 2) > e.clientY && blockBellow.classList.contains("dad_block")) {
+                element_up = true;
+                element_down = false;
+
+            } else {
+                element_down = true;
+                element_up = false;
+            }
         }
-
-        sorting_target = e.target;
     }
-});
-
-
-    
-// MOUSE OVER
-document.addEventListener("mouseover", function(e) {
-    
-
-    placeholder = document.createElement("div");
-    placeholder.classList.add("dad_block");
-    placeholder.classList.add("placeholder");
-    placeholder.style.background = "pink";
-
-    if(e.target.classList.contains("dad_block")) {
- 
-        
-    }
-   
-
-
-    if(e.target.classList.contains("dad_block_container") && mouseDown == true) {
-        
-        //e.target.appendChild(new_element);
-
-    }
-});
-
-// MOUSE LEAVE
-document.addEventListener("mouseout", function(e) {
-  
-    //console.log(e.relatedTarget);
-
-    new_element.remove();
 });
 
 
@@ -98,42 +73,39 @@ document.addEventListener("mouseout", function(e) {
 document.addEventListener("mouseup", function(e) {
     mouseDown = false;
     moving_element.classList.remove("moving");
-
-    moving_element.style.zIndex = "9999";
-
-
-    if(e.target.classList.contains("dad_block_container")) {
-        let new_element = document.createElement("div");
-        new_element.innerHTML = moving_element.innerHTML;
-        new_element.classList.add("dad_block");
-
-        e.target.appendChild(new_element);
-    }
-
-    else if(element_up == true) {
-        let new_element = document.createElement("div");
-        new_element.innerHTML = moving_element.innerHTML;
-        new_element.classList.add("dad_block");
-
-        sorting_target.parentNode.insertBefore(new_element, sorting_target);
-    } else if (element_down == true) {
-        let new_element = document.createElement("div");
-        new_element.innerHTML = moving_element.innerHTML;
-        new_element.classList.add("dad_block");
-
-        sorting_target.parentNode.insertBefore(new_element, sorting_target.nextSibling);
-    }
-
-   
     
+    try {
+        // if the block is dropped in container, we move this block to the new container
+
+        if(blockBellow != null) {
+            if(element_up) {
+                let element = document.createElement("div");
+                element.classList.add("dad_block");
+                element.innerHTML = moving_element.innerHTML;
         
-    placeholder.classList.remove("placeholder");
+                blockBellow.parentNode.insertBefore(element, blockBellow); 
+            } else if(element_down) {
+                let element = document.createElement("div");
+                element.classList.add("dad_block");
+                element.innerHTML = moving_element.innerHTML;
+        
+                blockBellow.parentNode.insertBefore(element, blockBellow.nextSibling); 
+            }
+        }
 
-    moving_element.remove();
+        else if(divBellow.classList.contains("dad_block_container")) {
+            let element = document.createElement("div");
+            element.classList.add("dad_block");
+            element.innerHTML = moving_element.innerHTML;
     
+            divBellow.appendChild(element); 
+        }
 
+    } catch (error) {
+ 
+    }
+    
+    moving_element.remove();
     moving_element = null;
-    //new_element.remove();
+    divBellow = null;
 });
-
-
