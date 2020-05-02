@@ -63,7 +63,7 @@ document.addEventListener("mousemove", function(e) {
         dad_block_bellow = document.elementFromPoint(event.clientX, event.clientY).closest(".dad_block");
         moving_element.hidden = false;
 
-        if(dad_container_bellow.children[0] == undefined || dad_container_bellow.children[0].classList.contains("moving")) {
+        if(dad_container_bellow.children[0] == undefined || dad_container_bellow.children[0].classList.contains("moving") && dad_container_bellow.children[1] == undefined) {
             let block = dadBlock();
 
             dad_container_bellow.appendChild(placeholder);
