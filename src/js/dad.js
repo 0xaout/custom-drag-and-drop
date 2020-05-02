@@ -16,6 +16,14 @@ let placeholder = document.createElement("div");
 placeholder.classList.add("placeholder");
 placeholder.classList.add("dad_block");
 
+function dadBlock() {
+    let element = document.createElement("div");
+    element.classList.add("dad_block");
+    element.innerHTML = moving_element.innerHTML;
+
+    return element;
+}
+
 // MOUSE DOWN
 document.addEventListener("mousedown", function(e) {   
     if(e.target.classList.contains("dad_block")) {
@@ -58,9 +66,7 @@ document.addEventListener("mousemove", function(e) {
         moving_element.hidden = false;
 
         if(divBellow.children[0] == undefined || divBellow.children[0].classList.contains("moving")) {
-            let element = document.createElement("div");
-            element.classList.add("dad_block");
-            element.innerHTML = moving_element.innerHTML;
+            let element = dadBlock();
 
             divBellow.appendChild(placeholder);
         }
@@ -100,33 +106,25 @@ document.addEventListener("mouseup", function(e) {
 
         if(blockBellow != null) {
             if(element_up) {
-                let element = document.createElement("div");
-                element.classList.add("dad_block");
-                element.innerHTML = moving_element.innerHTML;
+                let element = dadBlock();
         
                 blockBellow.parentNode.insertBefore(element, blockBellow); 
             } else if(element_down) {
-                let element = document.createElement("div");
-                element.classList.add("dad_block");
-                element.innerHTML = moving_element.innerHTML;
+                let element = dadBlock();
         
                 blockBellow.parentNode.insertBefore(element, blockBellow.nextSibling); 
             }
         }
 
         else if(divBellow.classList.contains("dad_block_container")) {
-            let element = document.createElement("div");
-            element.classList.add("dad_block");
-            element.innerHTML = moving_element.innerHTML;
+            let element = dadBlock();
     
             divBellow.appendChild(element); 
         }
 
     } catch (error) {
         // if the block is not dropped in a container, it goes back in it's previous position
-        let element = document.createElement("div");
-        element.classList.add("dad_block");
-        element.innerHTML = moving_element.innerHTML;
+        let element = dadBlock();
 
         placeholder.parentNode.insertBefore(element, placeholder);
     }
