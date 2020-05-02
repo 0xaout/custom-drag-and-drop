@@ -13,8 +13,8 @@ let element_up = false;
 let blockBellow = null;
 
 let placeholder = document.createElement("div");
-
 placeholder.classList.add("placeholder");
+placeholder.classList.add("dad_block");
 
 // MOUSE DOWN
 document.addEventListener("mousedown", function(e) {   
@@ -45,30 +45,26 @@ document.addEventListener("mousedown", function(e) {
 
 // MOUSE MOVE
 document.addEventListener("mousemove", function(e) {
-
     if(mouseDown == true) {
         // changing dragged block style to make it follow the mouse
-        
         moving_element.style.left = e.clientX - offsetX + "px";
         moving_element.style.top = e.clientY - offsetY + "px";
         
         // checking the div under the dragged block
         moving_element.hidden = true;
+        
         divBellow = document.elementFromPoint(event.clientX, event.clientY).closest(".dad_block_container");
         blockBellow = document.elementFromPoint(event.clientX, event.clientY).closest(".dad_block");
         moving_element.hidden = false;
 
-        //////////////////
-
-        if(divBellow.children[0] == undefined) {
+        if(divBellow.children[0] == undefined || divBellow.children[0].classList.contains("moving")) {
             let element = document.createElement("div");
             element.classList.add("dad_block");
             element.innerHTML = moving_element.innerHTML;
 
             divBellow.appendChild(placeholder);
         }
-        
-
+    
         if(blockBellow != null) {
             rect = blockBellow.getBoundingClientRect();
 
