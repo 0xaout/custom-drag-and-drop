@@ -12,6 +12,10 @@ let element_up = false;
 
 let blockBellow = null;
 
+let placeholder = document.createElement("div");
+
+placeholder.classList.add("placeholder");
+
 // MOUSE DOWN
 document.addEventListener("mousedown", function(e) {   
     if(e.target.classList.contains("dad_block")) {
@@ -30,6 +34,9 @@ document.addEventListener("mousedown", function(e) {
         offsetX = e.clientX - rect.left;
         offsetY = e.clientY - rect.top;
 
+        placeholder.innerHTML = moving_element.innerHTML;
+
+        moving_element.parentNode.insertBefore(placeholder, moving_element);
         moving_element.style.position = "absolute";
         moving_element.style.left = e.clientX - offsetX + "px";
         moving_element.style.top = e.clientY - offsetY + "px";
@@ -53,8 +60,19 @@ document.addEventListener("mousemove", function(e) {
 
         //////////////////
 
+        if(divBellow.children[0] == undefined) {
+            let element = document.createElement("div");
+            element.classList.add("dad_block");
+            element.innerHTML = moving_element.innerHTML;
+
+            divBellow.appendChild(placeholder);
+        }
+        
+
         if(blockBellow != null) {
             rect = blockBellow.getBoundingClientRect();
+
+            placeholder.innerHTML = moving_element.innerHTML;
         
             if(rect.top + (rect.height / 2) > e.clientY && blockBellow.classList.contains("dad_block")) {
                 element_up = true;
@@ -64,6 +82,13 @@ document.addEventListener("mousemove", function(e) {
                 element_down = true;
                 element_up = false;
             }
+
+            if(element_up) {
+                blockBellow.parentNode.insertBefore(placeholder, blockBellow); 
+
+            } else if(element_down) {
+                blockBellow.parentNode.insertBefore(placeholder, blockBellow.nextSibling); 
+            } 
         }
     }
 });
@@ -102,10 +127,16 @@ document.addEventListener("mouseup", function(e) {
         }
 
     } catch (error) {
- 
+        // if the block is not dropped in a container, it goes back in it's previous position
+        let element = document.createElement("div");
+        element.classList.add("dad_block");
+        element.innerHTML = moving_element.innerHTML;
+
+        placeholder.parentNode.insertBefore(element, placeholder);
     }
     
     moving_element.remove();
+    placeholder.remove();
     moving_element = null;
     divBellow = null;
 });
